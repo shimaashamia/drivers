@@ -10,6 +10,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
+<script src="assets{{Aptyp.js}}"></script>
+<!-- <script src="../public/js/Aptyp.js"></script>   -->
 
 <style>
 form{
@@ -58,37 +62,43 @@ table.table {
         <title>Laravel</title>
         </head>
 
-    <div class="container">
+    <div class="container" id="add_new_task">
     <div class="panel-body">
     <div class="row">
          <!-- <div class="col-lg-4"> -->
-            <form action="/driver" method="POST">
+         <div ng-app="storeList" ng-controller="myCtrl">
+         <a href="#!driver">driver</a>
+        
+            <!-- <form action="/driver" method="POST" ng-submit="addItem()"> -->
+            <form name="frm" ng-submit="addItem()">
             {{ csrf_field() }}
-       
-                <div class="col-lg-4 form-group">
+           
+                <div ng-app="myApp"  class="col-lg-4 form-group">
                     <label for="name">الصنف</label>
-                    <select class="form-control input-lg dynamic" id="product" name="products_id">
+                    <select class="form-control input-lg dynamic" ng-model="products_id" id="product" name="products_id">
                         <option value="">الصنف</option>
-                        @foreach($product as $products)
+                        <option ng-repeat="x in product" value="{{x.model}}">{{x.model}}</option>
+
+                        <!-- @foreach($product as $products)
                         <option value="{{$products->id}}">{{$products->product}}</option>
-                        @endforeach
+                        @endforeach -->
                     </select>
                     <!-- <input type="text" name="name" value="{{old ('name') }}" class="form-control"> -->
                     <!-- <div>{{ $errors->first('name') }}</div> -->
                 </div>
                 <div class="form-group col-lg-4">
                 <div class="radio">
-                    <label class="radio-inline"><input type="radio" name="price"  value="لتر"> لترات</label>
+                    <label class="radio-inline"><input type="radio" ng-model="price" name="price"  value="لتر"> لترات</label>
                 </div>
 
                 <div class="radio">
-                    <label class="radio-inline"><input type="radio" name="price" value="شيكل"> مبلغ </label>
+                    <label class="radio-inline"><input type="radio" ng-model="price" name="price" value="شيكل"> مبلغ </label>
                 </div>
                 </div>
 
                 <div class="form-group col-lg-4">
                     <label for="quantity">الكميه</label>
-                    <input type="number" name="quantity" class="form-control"
+                    <input type="number" name="quantity" ng-model="quantity" class="form-control"
                     value="{{app('request')->get('quantity')}}">
                     <!-- <div>{{ $errors->first('email') }}</div> -->
                 </div>
@@ -97,24 +107,25 @@ table.table {
                 <div class="form-group col-lg-4">
                     <label for="drive"> سائق</label>
                     <!-- <input type="text" name="email" value="{{old ('email') }}" class="form-control"> -->
-                    <select class="form-control input-lg dynamic" id="driver_list" name="drivers_id">
+                    <select class="form-control input-lg dynamic" ng-model="drivers_id" id="driver_list" name="drivers_id">
                         <option value="">سائق</option>
-                        @foreach($driver_list as $list)
+                        <option ng-repeat="x in driver_list" value="{{x.model}}">{{x.model}}</option>
+
+                        <!-- @foreach($driver_list as $list)
                         <option value="{{$list->id}}">{{$list->name_driver}}</option>
-                        @endforeach
+                        @endforeach -->
                     </select>
                     <!-- <div>{{ $errors->first('email') }}</div> -->
                 </div>
              
                 <div class="form-group col-sm-4">
                     <!-- <a href="submit" class="btn btn-success">اعتماد</a> -->
-                    <button type="submit" class="btn btn-success succ" id="btnShow"> اعتماد</button> 
+                    <button ng-disabled="frm.$invalid" type="submit" class="btn btn-success succ" id="btnShow"> اعتماد</button> 
                 </div>
                
 
-
             </form>
-         <!-- </div> -->
+         <div>
     </div>
     </div>
     </div>
@@ -137,13 +148,13 @@ table.table {
                 </tr>
             </thead>
             <tbody>
-                @foreach($info_driver as $post)
-                <tr>
-                    <td>{{$post->id}}</td>
-                    <td>{{ date('F d, Y', strtotime($post->created_at)) }}</td>
-                    <td>{{$post->Product->product}}</td>
-                    <td>{{$post->price}} {{$post->quantity}}</td>
-                    <td>{{$post->Driver->name_driver}}</td>
+                <!-- @foreach($info_driver as $post) -->
+                <tr ng-repeat="post in info_driver">
+                    <td>@{{post.id}}</td>
+                    <td>@{{ date('F d, Y', strtotime(post.created_at)) }}</td>
+                    <td>@{{post.Product.product}}</td>
+                    <td>@{{post.price}} {{post.quantity}}</td>
+                    <td>@{{post.Driver.name_driver}}</td>
                     <!-- <td>{{$post->stauts}}</td>  -->
                     <td>
                         @if($post->stauts==1)
@@ -167,10 +178,12 @@ table.table {
                         @endif
                     </td>
                 </tr>
-                @endforeach
+                <!-- @endforeach -->
             </tbody>
         </table>
     </div>
+   
+    <div ng-view></div>
 </html>
 
 <script>
@@ -198,4 +211,5 @@ $("#btnShow").click(function(){
     alert("done add");
  // $(".alert").hide().show('medium');
 });
+
 </script>

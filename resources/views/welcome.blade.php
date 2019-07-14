@@ -9,6 +9,7 @@
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
+        <!-- <script src="../js/Aptyp.js"></script>  -->
 
         <!-- Styles -->
         <style>
@@ -65,6 +66,8 @@
         </style>
     </head>
     <body>
+    <!-- <a href="#!driver">driver</a> -->
+
         <div class="flex-center position-ref full-height">
             @if (Route::has('login'))
                 <div class="top-right links">

@@ -15,6 +15,14 @@
 //     return view('welcome');
 // });
 
+Route::get('/', function () {
+    include public_path().'/views/index.blade.php';
+
+  //  return view('../views/index.blade.php');
+});
+
+
+
 //  Route::get('drive/index', function () {
 //      return view('drive/index');
 //  });
@@ -22,7 +30,9 @@
 
 //Route::get('drive/index','ProductController@index_api');
 //Route::controller('driver','DriverController');
+
 Route::resource('driver', 'DriverController');
+//Route::resource('AngularJs', 'DriverController');
 
 // Route::put('drive/index/{id}',[ 'as' =>'drive.update','uses'=>'DriverController@update']);
 // Route::get('drive/index',[ 'uses'=>'DriverController@index']);

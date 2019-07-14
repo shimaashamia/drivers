@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 
 class DriverController extends Controller
 {
+  
     public function index(){
 
           $driver_list=Driver::all(); 
@@ -24,8 +25,14 @@ class DriverController extends Controller
         //dd($info_driver);
          //$response=array('driver_list','product','info_driver');
      
-       
-        return view ('drive.index',compact('driver_list','product','info_driver'));
+         return response()->json([
+          'driver_list' =>  $driver_list,
+          'product' =>  $product,
+          'info_driver' =>  $info_driver,
+      ], 200);
+      //  return view ('drive.index',compact('driver_list','product','info_driver'));
+      //  return view ('AngularJs.index',compact('driver_list','product','info_driver'));
+
          
     }
 
@@ -54,13 +61,17 @@ class DriverController extends Controller
        // $order=Order::all();
          $info_driver->fill($request->all());
           $info_driver->save();
+          return response()->json([
+            'info_driver'    => $info_driver,
+            'message' => 'Success'
+        ], 200);
          // $order->sortBy('id');
         // Session::flash('success', 'Data has been saved successfully!');
 
     //Redirect to another page
    // return redirect()->route('drive.index', $post->id);
    //return view('order',['items'=>$item,'orders'=>$order->sortBy('id', SORT_REGULAR, true),'users'=>$user]);
-          return redirect()->back()->with('success','book has been saved successfully');
+          //return redirect()->back()->with('success','book has been saved successfully');
     }
 
     public function update(Request $request, $id)
